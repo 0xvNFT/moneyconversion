@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_updates"
+        android:icon="@drawable/ic_latest_updates"
+        android:title="Updates" />
+
+    <item
+        android:id="@+id/navigation_conversion"
+        android:icon="@drawable/ic_currency_conversion"
+        android:title="Conversion" />
+
+    <item
+        android:id="@+id/navigation_history"
+        android:icon="@drawable/ic_history"
+        android:title="History" />
+</menu>
