@@ -2,9 +2,22 @@ plugins {
     alias(libs.plugins.androidApplication)
 }
 
+// Read local.properties
+Properties properties = new Properties()
+File localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    properties.load(localPropertiesFile.newDataInputStream())
+}
+def myApiKey = properties.getProperty('myApiKey', '""')
+
+
 android {
     namespace 'com.vvv.moneyconversion'
     compileSdk 34
+
+    buildFeatures {
+        buildConfig true
+    }
 
     defaultConfig {
         applicationId "com.vvv.moneyconversion"
@@ -12,6 +25,8 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
+        buildConfigField 'String', 'MY_API_KEY', myApiKey
+
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -37,7 +52,11 @@ dependencies {
     implementation libs.androidx.navigation.fragment
     implementation libs.androidx.navigation.fragment.ktx
     implementation libs.androidx.navigation.ui.ktx
+    implementation libs.retrofit
+    implementation libs.converter.gson
+
     testImplementation libs.junit
     androidTestImplementation libs.androidx.test.ext.junit
     androidTestImplementation libs.espresso.core
+
 }

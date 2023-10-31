@@ -1,6 +1,7 @@
 package com.vvv.moneyconversion.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,30 +10,25 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import com.vvv.moneyconversion.BuildConfig;
 import com.vvv.moneyconversion.R;
-import com.vvv.moneyconversion.data.CurrencyRate;
-import com.vvv.moneyconversion.ui.adapter.CurrencyRateAdapter;
+import com.vvv.moneyconversion.model.ExchangeResponse;
+import com.vvv.moneyconversion.repository.CurrencyRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class LatestUpdatesFragment extends Fragment {
-
+public class LatestUpdatesFragmentApi extends Fragment {
     private final String[] currencies = {"USD", "EUR", "JPY", "GBP", "AUD", "CAD", "CHF", "CNY", "SEK", "NZD", "MXN", "SGD", "HKD", "NOK", "KRW"};
-    private final Random random = new Random();
     private Spinner spinnerCurrency;
     private TextView tvCurrencyValueBuy;
     private TextView tvCurrencyValueSell;
-    private RecyclerView recyclerView;
-    private CurrencyRateAdapter currencyRateAdapter;
 
-    public LatestUpdatesFragment() {
-        // Required empty public constructor
+    public LatestUpdatesFragmentApi() {
     }
 
     @Override
@@ -43,8 +39,6 @@ public class LatestUpdatesFragment extends Fragment {
         spinnerCurrency = view.findViewById(R.id.spinner_currency);
         tvCurrencyValueBuy = view.findViewById(R.id.tv_currency_value_buy);
         tvCurrencyValueSell = view.findViewById(R.id.tv_currency_value_sell);
-        recyclerView = view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, currencies);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -58,35 +52,37 @@ public class LatestUpdatesFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // No action needed
+
             }
         });
-
-        currencyRateAdapter = new CurrencyRateAdapter();
-        recyclerView.setAdapter(currencyRateAdapter);
-        generateCurrencyRateData();
 
         return view;
     }
 
-    private void generateCurrencyRateData() {
-        List<CurrencyRate> currencyRateList = new ArrayList<>();
-        for (String currency : currencies) {
-            float rate = 20 + random.nextFloat() * 10;
-            float percentageChange = random.nextFloat() * 5;
-            CurrencyRate currencyRate = new CurrencyRate(currency, currency, rate);
-            currencyRate.setChangePercentage(percentageChange);
-            currencyRateList.add(currencyRate);
-        }
-        currencyRateAdapter.setData(currencyRateList);
-    }
-
-
     private void updateCurrencyValues() {
-        float buyRate = 20 + random.nextFloat() * 10;
-        float sellRate = buyRate + random.nextFloat() * 2;
+        String selectedCurrency = spinnerCurrency.getSelectedItem().toString();
+        Log.d("LatestUpdatesFragment", "API Key: " + BuildConfig.MY_API_KEY);
 
-        tvCurrencyValueBuy.setText(String.format("Giá Mua: %.2f", buyRate));
-        tvCurrencyValueSell.setText(String.format("Giá Bán: %.2f", sellRate));
+        CurrencyRepository.getInstance().getLatestRatesWithKey("USD", BuildConfig.MY_API_KEY).enqueue(new Callback<ExchangeResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<ExchangeResponse> call, @NonNull Response<ExchangeResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().getRates() != null) {
+                    ExchangeResponse exchangeResponse = response.body();
+                    float buyRate = 1.0f;
+                    float sellRate = exchangeResponse.getRates().get(selectedCurrency);
+                    tvCurrencyValueBuy.setText(String.format("Giá Mua: %.2f", buyRate));
+                    tvCurrencyValueSell.setText(String.format("Giá Bán: %.2f", sellRate));
+                } else {
+                    Log.e("LatestUpdatesFragment", "Error in API response or rates map is null. Response: " + response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ExchangeResponse> call, Throwable t) {
+                Log.e("LatestUpdatesFragment", "API request failed", t);
+            }
+        });
     }
+
 }
+

@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment;
 
 import com.vvv.moneyconversion.R;
 
+
 public class CurrencyConversionFragment extends Fragment {
 
     public CurrencyConversionFragment() {
-        // Required empty public constructor
     }
 
     @Override

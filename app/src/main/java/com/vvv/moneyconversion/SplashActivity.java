@@ -10,7 +10,6 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
 
