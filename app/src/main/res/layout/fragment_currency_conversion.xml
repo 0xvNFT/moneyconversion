@@ -1,19 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
 
+    <!-- Source Currency Section -->
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/sourceCurrencyName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Currency Conversion"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="USD"
+        android:textSize="18sp" />
 
-</FrameLayout>
+    <HorizontalScrollView
+        android:id="@+id/sourceFlagsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sourceCurrencyName"
+        android:layout_marginTop="8dp">
+
+        <LinearLayout
+            android:id="@+id/sourceFlagsContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <!-- Flag icons will be populated programmatically -->
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <EditText
+        android:id="@+id/sourceAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sourceFlagsList"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:inputType="numberDecimal"
+        android:text=""
+        android:textSize="32sp" />
+
+    <ImageButton
+        android:id="@+id/convertButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sourceAmount"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_convert" />
+
+    <!-- Target Currency Section -->
+    <TextView
+        android:id="@+id/targetCurrencyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/convertButton"
+        android:layout_marginTop="32dp"
+        android:text="EURO"
+        android:textSize="18sp" />
+
+    <HorizontalScrollView
+        android:id="@+id/targetFlagsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/targetCurrencyName"
+        android:layout_marginTop="8dp">
+
+        <LinearLayout
+            android:id="@+id/targetFlagsContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <!-- Flag icons will be populated programmatically -->
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/targetAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/targetFlagsList"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:inputType="numberDecimal"
+        android:text=""
+        android:textSize="32sp" />
+
+</RelativeLayout>

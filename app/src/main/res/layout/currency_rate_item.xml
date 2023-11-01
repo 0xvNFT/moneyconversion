@@ -10,7 +10,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="8dp"
-        android:src="@drawable/us_flag" /> <!-- Placeholder image -->
+        android:src="@drawable/usd_flag" /> <!-- Placeholder image -->
 
     <TextView
         android:id="@+id/currency_change_percentage"
