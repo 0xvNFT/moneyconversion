@@ -10,9 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.vvv.moneyconversion.R;
+import com.vvv.moneyconversion.viewmodel.ConversionHistoryViewModel;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +28,7 @@ public class CurrencyConversionFragment extends Fragment {
     private LinearLayout sourceFlagsContainer, targetFlagsContainer;
     private TextView sourceCurrencyName, targetCurrencyName;
     private EditText sourceAmount;
+    private ConversionHistoryViewModel historyViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -31,7 +36,7 @@ public class CurrencyConversionFragment extends Fragment {
 
         // Initialize the conversion rates
         conversionRates.put("USDVND", 23000.0);
-        conversionRates.put("VNDUSD", 1 / 23000.0); // The reverse conversion
+        conversionRates.put("VNDUSD", 1 / 23000.0);
 
         sourceFlagsContainer = view.findViewById(R.id.sourceFlagsContainer);
         targetFlagsContainer = view.findViewById(R.id.targetFlagsContainer);
@@ -40,7 +45,10 @@ public class CurrencyConversionFragment extends Fragment {
         sourceAmount = view.findViewById(R.id.sourceAmount);
         targetAmount = view.findViewById(R.id.targetAmount);
 
-        targetCurrencyName.setText(currencies[1]); // Set initial target currency name
+        sourceCurrencyName.setText(currencies[0]);
+        targetCurrencyName.setText(currencies[1]);
+
+        historyViewModel = new ViewModelProvider(requireActivity()).get(ConversionHistoryViewModel.class);
 
         for (String currency : currencies) {
             ImageView sourceFlagIcon = new ImageView(getContext());
@@ -78,8 +86,8 @@ public class CurrencyConversionFragment extends Fragment {
     }
 
     private void configureFlag(ImageView flagIcon, LinearLayout container) {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(100, 100);  // width, height in pixels
-        params.setMargins(10, 10, 10, 10);  // set margins if you want spacing between flags
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(100, 100);
+        params.setMargins(10, 10, 10, 10);
         flagIcon.setLayoutParams(params);
         container.addView(flagIcon);
     }
@@ -110,6 +118,18 @@ public class CurrencyConversionFragment extends Fragment {
                 double amount = Double.parseDouble(sourceAmount.getText().toString());
                 double convertedAmount = amount * rate;
                 targetAmount.setText(String.format("%.2f", convertedAmount));
+                historyViewModel.addConversion(sourceCurrency + " -> " + targetCurrency + ": " + amount + " -> " + String.format("%.2f", convertedAmount));
+                String conversionString = String.format(
+                        "%s,%s,%s,%s,%s",
+                        new SimpleDateFormat("HH'h'mm - dd/MM/yyyy").format(new Date()),
+                        sourceCurrency,
+                        targetCurrency,
+                        sourceAmount.getText().toString(),
+                        targetAmount.getText().toString()
+                );
+                historyViewModel.addConversion(conversionString);
+
+                historyViewModel.addConversion(conversionString);
             } catch (NumberFormatException e) {
                 sourceAmount.setError("Invalid input!");
             }

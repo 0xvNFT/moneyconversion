@@ -2,14 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="60dp"
     android:padding="16dp">
 
-    <!-- Source Currency Section -->
     <TextView
         android:id="@+id/sourceCurrencyName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="USD"
+        android:text="Currency Name"
+        android:textStyle="bold"
         android:textSize="18sp" />
 
     <HorizontalScrollView
@@ -24,7 +25,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <!-- Flag icons will be populated programmatically -->
         </LinearLayout>
 
     </HorizontalScrollView>
@@ -35,9 +35,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/sourceFlagsList"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
         android:inputType="numberDecimal"
+        android:hint="Enter Amount"
         android:text=""
+        android:textAlignment="center"
         android:textSize="32sp" />
 
     <ImageButton
@@ -50,14 +51,14 @@
         android:background="@android:color/transparent"
         android:src="@drawable/ic_convert" />
 
-    <!-- Target Currency Section -->
     <TextView
         android:id="@+id/targetCurrencyName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/convertButton"
-        android:layout_marginTop="32dp"
-        android:text="EURO"
+        android:layout_marginTop="16dp"
+        android:text="Currency Name"
+        android:textStyle="bold"
         android:textSize="18sp" />
 
     <HorizontalScrollView
@@ -72,7 +73,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <!-- Flag icons will be populated programmatically -->
         </LinearLayout>
 
     </HorizontalScrollView>
@@ -83,9 +83,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/targetFlagsList"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
         android:inputType="numberDecimal"
-        android:text=""
+        android:text="Converted Amount"
         android:textSize="32sp" />
 
 </RelativeLayout>

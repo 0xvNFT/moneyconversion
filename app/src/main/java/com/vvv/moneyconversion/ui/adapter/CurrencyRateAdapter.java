@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.vvv.moneyconversion.R;
 import com.vvv.moneyconversion.data.CurrencyRate;
+import com.vvv.moneyconversion.view.CurrencyRateViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;

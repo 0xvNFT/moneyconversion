@@ -1,4 +1,4 @@
-package com.vvv.moneyconversion.ui.adapter;
+package com.vvv.moneyconversion.view;
 
 import android.view.View;
 import android.widget.TextView;
